@@ -1,0 +1,41 @@
+{
+  "mcpServers": {
+    "context7": {
+      "type": "sse",
+      "url": "https://mcp.context7.com/sse"
+    },
+    "mcp-server-redis": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-redis",
+        "redis://127.0.0.1:6379"
+      ]
+    },
+    "mcp-server-postgres": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://user:password@localhost:5432/dbname"
+      ]
+    },
+    "mcp-server-rabbitmq": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "rabbitmq-mcp"
+      ],
+      "env": {
+        "RABBITMQ_HOST": "127.0.0.1",
+        "RABBITMQ_PORT": "15672",
+        "RABBITMQ_USER": "guest",
+        "RABBITMQ_PASSWORD": "guest",
+        "RABBITMQ_VHOST": "/"
+      }
+    }
+  }
+}

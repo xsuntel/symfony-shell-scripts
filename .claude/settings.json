@@ -1,0 +1,83 @@
+{
+  "model": "claude-sonnet-4-6",
+  "availableModels": [
+    "claude-sonnet-4-6",
+    "opus"
+  ],
+  "env": {
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6",
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "8192",
+    "MAX_MCP_OUTPUT_TOKENS": "25000"
+  },
+  "permissions": {
+    "defaultMode": "plan",
+    "allow": [
+      "Edit(app/assets/**/*)",
+      "Edit(app/config/**/*)",
+      "Edit(app/public/**/*)",
+      "Edit(app/src/**/*)",
+      "Edit(app/templates/**/*)",
+      "Edit(app/migrations/**/*)",
+      "Edit(app/tests/**/*)",
+      "Edit(app/translations/**/*)",
+      "Bash(app/vendor/bin/*:*)",
+      "Edit(diagram/**/*)",
+      "Edit(scripts/**/*)",
+      "Bash(php:*)",
+      "Bash(composer:*)",
+      "Bash(git:*)"
+    ],
+    "deny": [
+      "Edit(.gemini/**/*)",
+      "Read(.gemini/**/*)",
+      "Edit(.github/**/*)",
+      "Edit(.vscode/**/*)",
+      "Edit(app/.env)",
+      "Edit(app/.env.dev)",
+      "Edit(app/.env.prod)",
+      "Read(tools/**/*)",
+      "Edit(.env.app)",
+      "Read(.env.dev)",
+      "Read(.env.prod)",
+      "Edit(.gitignore)",
+      "Bash(rm:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/pre-tool/app-base-check.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/post-tool/app-symfony-cache.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pw-play /usr/share/sounds/freedesktop/stereo/complete.oga 2>/dev/null || aplay /usr/share/sounds/alsa/Front_Center.wav 2>/dev/nul || true",
+            "async": true
+          }
+        ]
+      }
+    ]
+  },
+  "cleanupPeriodDays": 30,
+  "autoUpdatesChannel": "stable"
+}
